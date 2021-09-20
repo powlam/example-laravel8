@@ -1,5 +1,13 @@
 @extends('layouts.main')
 
+@section('local_styles')
+    @livewireStyles
+@endsection
+
+@section('local_scripts')
+    @livewireScripts
+@endsection
+
 @section('main')
     <table class="max-w-6xl mx-auto text-center">
         <thead class="bg-white">
