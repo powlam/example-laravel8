@@ -35,9 +35,14 @@ class Element extends Model
     /**
      * Helpers
      */
-    public static function validStatuses()
+    public static function validStatuses(): array
     {
         return range(0, 5);
+    }
+
+    public static function isValidStatus($status): bool
+    {
+        return $status !== null && $status !== '' && in_array($status, self::validStatuses());
     }
 
 }

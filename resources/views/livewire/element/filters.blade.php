@@ -10,9 +10,9 @@
             <label for="">Estado</label>
             <select wire:model.defer="filter.status" class="form-control" >
                 <option value="">...</option>
-                @for ($v = 0; $v <= 5 ; $v++)
+                @foreach (\App\Models\Element::validStatuses() as $v)
                     <option>{{ $v }}</option>
-                @endfor
+                @endforeach
             </select>
         </div>
 
@@ -37,7 +37,7 @@
 
         <div class="col-md-2" style="display: flex;align-items: flex-end;" >
             <div>
-                <button type="button" wire:click="loadList" class="btn btn-primary">Filtrar</button>
+                <button type="button" wire:click="$refresh" class="btn btn-primary">Filtrar</button>
             </div>
         </div>
     </div>

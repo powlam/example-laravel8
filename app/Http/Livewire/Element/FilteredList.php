@@ -3,93 +3,63 @@
 namespace App\Http\Livewire\Element;
 
 use App\Models\Element;
+use Illuminate\Pagination\Paginator;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class FilteredList extends Component
 {
-    public $elements = []; 
+    use WithPagination;
 
-    public $paginator = [];
-
-    public $page = 1;
+    public $currentPage = 1;
 
     public $items_per_page = 5;
 
+    public $filter = [];
+
     public $loading_message = 'Cargando';
-
-    public $listeners = [
-        'load_list' => 'loadList',
-    ];
-
-    public $filter = [
-        'search' => '',
-        'status' => '',
-        'order_field' => '',
-        'order_type' => '',
-    ];
-
-    protected $updatesQueryString = ['page'];
-    
-    public function mount()
-    {
-        $this->loadList();
-    }
 
     public function loadList()
     {
-//        $this->elements = Element::paginate($this->items_per_page);
+        $search = $this->filter['search'] ?? null;
+        $status = $this->filter['status'] ?? null;
 
-        $query = [];
-
-        if ($this->filter["status"] !== '' && in_array($this->filter["status"], Element::validStatuses())) {
-            $query["status"] = $this->filter["status"];
-            $elements = Element::where($query);
-        }
-
-        $elements = Element::where($query);
-
-        // Search
-        if (!empty($this->filter["search"])) {
-            $filter = $this->filter;
-            $elements = $elements->where(function ($query) use ($filter) {
-                $query->where('title', 'LIKE', '%' . $filter['search'] . '%')
-                ->orWhere('description', 'LIKE', '%' . $filter['search'] . '%');
+        $elements = Element
+            ::when($search, function ($query, $search) {
+                return $query->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%');
+            })
+            ->when($status, function ($query, $status) { // FIX $status=0
+                return $query->where('status', $status);
             });
-        }
 
-        // Ordering
         if (!empty($this->filter["order_field"])) {
-            $order_type = isset($this->filter["order_type"]) && ($this->filter["order_type"] == 'DESC') ? 'DESC' : 'ASC';
+            $order_type = isset($this->filter["order_type"]) && ($this->filter["order_type"] == 'DESC') ? 'desc' : 'asc';
             $elements = $elements->orderBy($this->filter["order_field"], $order_type);
         }
 
-        // Paginating
-        $elements = $elements->paginate($this->items_per_page);
-
-        $this->paginator = $elements->toArray();
-        $this->elements = $elements->items();
+        return $elements->paginate($this->items_per_page);
     }
 
-    // Pagination Method
-    public function applyPagination($action, $value, $options=[])
+    public function resetFilters()
     {
-        if ($action == "previous_page" && $this->page > 1) {
-            $this->page -= 1;
-        }
+        $this->filter = [];
+    }
 
-        if ($action == "next_page") {
-            $this->page += 1;
-        }
+    public function setPage($url)
+    {
+        $this->currentPage = explode('page=', $url)[1];
 
-        if ($action == "page") {
-            $this->page = $value;
-        }
-
-        $this->loadList();
+        Paginator::currentPageResolver(function() {
+            return $this->currentPage;
+        });
     }
 
     public function render()
     {
-        return view('livewire.element.filtered-list');
+        return view('livewire.element.filtered-list', [
+            'elements' => $this->loadList()
+        ]);
     }
+
 }

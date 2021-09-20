@@ -30,5 +30,7 @@
         </tbody>
     </table>
 
-    @include('livewire.element.paginator')
+    @if ($elements and $elements->count() > 0)
+        {{ $elements->links() }}
+    @endif
 </div>
