@@ -2,27 +2,27 @@
     <div wire:loading wire:init="loadList">
         {{ $loading_message }}
     </div>
-        
-    <table class="max-w-6xl mx-auto text-center">
-        <thead class="bg-white">
+
+    <table class="max-w-6xl mx-auto text-center table">
+        <thead>
             <tr>
-                <th class="border-t">ID</th>
-                <th class="border-t">Title</th>
-                <th class="border-t">Description</th>
-                <th class="border-t">Status</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($elements as $element)
                 <tr>
-                    <td class="border-t">{{ $element->id }}</td>
-                    <td class="border-t">{{ $element->title }}</td>
-                    <td class="border-t">{{ $element->description }}</td>
-                    <td class="border-t">{{ $element->status }}</td>
+                    <td>{{ $element->id }}</td>
+                    <td>{{ $element->title }}</td>
+                    <td>{{ $element->description }}</td>
+                    <td>{{ $element->status }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="border-t">No hay elementos</td>
+                    <td colspan="4">No hay elementos</td>
                 </tr>
             @endforelse
         </tbody>
