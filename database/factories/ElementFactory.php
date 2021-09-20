@@ -24,7 +24,7 @@ class ElementFactory extends Factory
         return [
             'title' => $this->faker->text(50),
             'description' => $this->faker->text(1000),
-            'status' => rand(0, 5),
+            'status' => Element::validStatuses(),
         ];
     }
 }

@@ -32,4 +32,12 @@ class Element extends Model
      */
     protected $fillable = [ 'title', 'description', 'status', ];
 
+    /**
+     * Helpers
+     */
+    public static function validStatuses()
+    {
+        return range(0, 5);
+    }
+
 }
