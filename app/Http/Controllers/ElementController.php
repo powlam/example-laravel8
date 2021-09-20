@@ -13,8 +13,7 @@ class ElementController extends Controller
      */
     public function index()
     {
-        $elements = Element::all();
-        return view('element.index', compact('elements'));
+        return view('element.index');
     }
 
     // /**

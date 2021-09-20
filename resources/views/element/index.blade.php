@@ -9,5 +9,5 @@
 @endsection
 
 @section('main')
-    @livewire('element.filtered-list', ['elements' => $elements])
+    @livewire('element.filtered-list')
 @endsection

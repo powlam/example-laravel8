@@ -1,4 +1,8 @@
 <div>
+    <div wire:loading wire:init="loadList">
+        {{ $loading_message }}
+    </div>
+        
     <table class="max-w-6xl mx-auto text-center">
         <thead class="bg-white">
             <tr>
@@ -23,4 +27,6 @@
             @endforelse
         </tbody>
     </table>
+
+    {{ $elements->links() }}
 </div>
