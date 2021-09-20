@@ -1,7 +1,9 @@
 <div>
-    <div wire:loading wire:init="loadList">
+    <div wire:loading>
         {{ $loading_message }}
     </div>
+
+    @include('livewire.element.filters')
 
     <table class="max-w-6xl mx-auto text-center table">
         <thead>
@@ -28,5 +30,5 @@
         </tbody>
     </table>
 
-    {{ $elements->links() }}
+    @include('livewire.element.paginator')
 </div>
