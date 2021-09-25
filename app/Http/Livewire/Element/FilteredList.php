@@ -21,6 +21,8 @@ class FilteredList extends Component
 
     public $loading_message = 'Cargando';
 
+    public $alert = [];
+
     public function loadList()
     {
         $search = $this->filter['search'] ?? null;
@@ -64,10 +66,22 @@ class FilteredList extends Component
 
         if ($elements->isEmpty()) {
             Log::debug("downloadToCSV isEmpty");
+            $this->alert['downloadToCSV']['danger'] = 'Nothing to download';
         } else {
             $writer = Writer::createFromPath(storage_path('app/public/download.csv'), 'w+');
             foreach ($elements as $element) {
                 $writer->insertOne([ $element->id, $element->title, $element->description, $element->status, ]);
+            }
+            $this->alert['downloadToCSV']['success'] = 'File generated';
+        }
+    }
+
+    public function resetAlert($target, $type)
+    {
+        if (array_key_exists($target, $this->alert) && array_key_exists($type, $this->alert[$target])) {
+            unset($this->alert[$target][$type]);
+            if (empty($this->alert[$target])) {
+                unset($this->alert[$target]);
             }
         }
     }

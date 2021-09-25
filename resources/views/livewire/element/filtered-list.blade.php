@@ -34,6 +34,9 @@
         {{ $elements->links() }}
     @endif
 
-    <button type="button" wire:click="downloadToCSV" class="btn btn-primary">@include('icons.download')</button>
+    <div class="col-md-4">
+        <button type="button" wire:click="downloadToCSV" class="btn btn-primary">@include('icons.download')</button>
+        @include('livewire.element.alert', ['target' => 'downloadToCSV'])
+    </div>
 
 </div>
