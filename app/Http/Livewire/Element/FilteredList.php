@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Element;
 use App\Models\Element;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -72,7 +73,7 @@ class FilteredList extends Component
             foreach ($elements as $element) {
                 $writer->insertOne([ $element->id, $element->title, $element->description, $element->status, ]);
             }
-            $this->alert['downloadToCSV']['success'] = 'File generated';
+            return Storage::disk('local')->download('public/download.csv');
         }
     }
 
