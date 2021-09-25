@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Element;
 
 use App\Models\Element;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
+use League\Csv\Writer;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,7 +40,7 @@ class FilteredList extends Component
             $elements = $elements->orderBy($this->filter["order_field"], $order_type);
         }
 
-        return $elements->paginate($this->items_per_page);
+        return $elements;
     }
 
     public function resetFilters()
@@ -55,10 +57,25 @@ class FilteredList extends Component
         });
     }
 
+    public function downloadToCSV()
+    {
+        Log::debug("downloadToCSV");
+        $elements = $this->loadList()->get();
+
+        if ($elements->isEmpty()) {
+            Log::debug("downloadToCSV isEmpty");
+        } else {
+            $writer = Writer::createFromPath(storage_path('app/public/download.csv'), 'w+');
+            foreach ($elements as $element) {
+                $writer->insertOne([ $element->id, $element->title, $element->description, $element->status, ]);
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.element.filtered-list', [
-            'elements' => $this->loadList()
+            'elements' => $this->loadList()->paginate($this->items_per_page)
         ]);
     }
 

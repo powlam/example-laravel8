@@ -33,4 +33,7 @@
     @if ($elements and $elements->count() > 0)
         {{ $elements->links() }}
     @endif
+
+    <button type="button" wire:click="downloadToCSV" class="btn btn-primary">@include('icons.download')</button>
+
 </div>
