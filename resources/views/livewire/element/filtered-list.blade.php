@@ -32,15 +32,16 @@
 
     @if ($elements and $elements->count() > 0)
         {{ $elements->links() }}
-    @endif
 
-    <div class="col-md-4">
-        <button type="button" wire:click="downloadToCSV" wire:loading.attr="disabled" wire:target='downloadToCSV' class="btn btn-primary col-6 d-flex gap-2 justify-content-center align-items-center">
-            <span>CSV</span>
-            @include('icons.download')
-        </button>
-        <span wire:loading.delay wire:target="downloadToCSV" class="text-sm">Descargando...</span>
-        @include('livewire.element.alert', ['target' => 'downloadToCSV'])
-    </div>
+        <div class="col-md-4">
+            <button type="button" wire:click="downloadToCSV" wire:loading.attr="disabled" wire:target='downloadToCSV' class="btn btn-primary col-6 d-flex gap-2 align-items-center">
+                <span>CSV</span>
+                @include('icons.download')
+                <span class="badge bg-warning ms-auto" title="{{ $elements->total() }} elementos">{{ $elements->total() }}</span>
+            </button>
+            <span wire:loading.delay wire:target="downloadToCSV" class="text-sm">Descargando...</span>
+            @include('livewire.element.alert', ['target' => 'downloadToCSV'])
+        </div>
+    @endif
 
 </div>
