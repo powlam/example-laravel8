@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Element;
 use App\Models\Element;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -69,11 +69,16 @@ class FilteredList extends Component
             Log::debug("downloadToCSV isEmpty");
             $this->alert['downloadToCSV']['danger'] = 'Nothing to download';
         } else {
-            $writer = Writer::createFromPath(storage_path('app/public/download.csv'), 'w+');
+            $writer = Writer::createFromString('');
+            $writer->addFormatter((new CharsetConverter())->inputEncoding('UTF-8')->outputEncoding('WINDOWS-1252'));
+            $writer->setDelimiter(';');
+            $writer->insertOne([ 'id', 'title', 'description', 'status', ]);
             foreach ($elements as $element) {
                 $writer->insertOne([ $element->id, $element->title, $element->description, $element->status, ]);
             }
-            return Storage::disk('local')->download('public/download.csv');
+            return response()->streamDownload(function() use ($writer) {
+                echo $writer->toString();
+            }, 'download.csv');
         }
     }
 
