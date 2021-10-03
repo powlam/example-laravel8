@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Element;
 
 use App\Models\Element;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
@@ -14,7 +13,7 @@ class FilteredList extends Component
 {
     use WithPagination;
 
-    public $currentPage = 1;
+    protected $paginationTheme = 'bootstrap';
 
     public $items_per_page = 5;
 
@@ -49,15 +48,6 @@ class FilteredList extends Component
     public function resetFilters()
     {
         $this->filter = [];
-    }
-
-    public function setPage($url)
-    {
-        $this->currentPage = explode('page=', $url)[1];
-
-        Paginator::currentPageResolver(function() {
-            return $this->currentPage;
-        });
     }
 
     public function downloadToCSV()
