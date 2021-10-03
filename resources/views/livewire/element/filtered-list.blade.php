@@ -5,19 +5,20 @@
 
     @include('livewire.element.filters')
 
-    <table class="max-w-6xl mx-auto text-center table">
+    <table class="max-w-6xl mx-auto text-center table table-sm table-info table-hover table-bordered border-info">
+        <caption>Tabla de elementos</caption>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($elements as $element)
                 <tr>
-                    <td>{{ $element->id }}</td>
+                    <th scope="row">{{ $element->id }}</td>
                     <td>{{ $element->title }}</td>
                     <td>{{ $element->description }}</td>
                     <td>{{ $element->status }}</td>
