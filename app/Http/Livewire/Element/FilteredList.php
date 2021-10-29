@@ -50,6 +50,11 @@ class FilteredList extends Component
         $this->filter = [];
     }
 
+    public function updatingFilter()
+    {
+        $this->resetPage();
+    }
+
     public function downloadToCSV()
     {
         Log::debug("downloadToCSV");
