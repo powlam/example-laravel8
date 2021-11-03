@@ -15,7 +15,15 @@
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <style>
-            body{font-family:'Nunito', sans-serif;}
+            /*Light mode*/
+            :root{--body-bg:#FFFFFF; --body-color:#000000;}
+            /*Dark mode*/
+            @media(prefers-color-scheme: dark)
+            {
+                :root{--body-bg:#000000; --body-color:#FFFFFF;}
+            }
+
+            body{background: var(--body-bg); color: var(--body-color); font-family:'Nunito', sans-serif;}
         </style>
 
         @yield('local_styles')
